@@ -10,6 +10,9 @@
 # Precompiled Headers
 *.gch
 *.pch
+*.ipch
+*.db
+*.opendb
 
 # Compiled Dynamic libraries
 *.so
@@ -25,6 +28,12 @@
 *.la
 *.a
 *.lib
+*.log
+*.exp
+*.rr
+*.rc
+*.tlog
+*.pdb
 
 # Executables
 *.exe
