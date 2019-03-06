@@ -353,7 +353,7 @@ cl /D "MSWindows" /EP $(IntDir)%(Filename).rrc &gt;               "$(ProjectDir)
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)%(Filename).rc;%(Outputs)</Outputs>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)%(Filename).rc;%(Outputs)</Outputs>
     </CustomBuild>
-    <CustomBuild Include="..\GLSL_files\fragment_shader.frag">
+    <CustomBuild Include="..\GLSL_files\BDLM_Fragment_8bit.frag.glsl">
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Copying Fragment Shader...</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Copying Fragment Shader...</Message>
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">copy "%(FullPath)" "$(TargetDir)"
@@ -371,7 +371,7 @@ cl /D "MSWindows" /EP $(IntDir)%(Filename).rrc &gt;               "$(ProjectDir)
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(TargetDir)%(Filename)%(Extension);%(Outputs)</Outputs>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(TargetDir)%(Filename)%(Extension);%(Outputs)</Outputs>
     </CustomBuild>
-    <CustomBuild Include="..\GLSL_files\vertex_shader.vert">
+    <CustomBuild Include="..\GLSL_files\BDLM_Vertex_Shader.vert.glsl">
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Copying Vertex Shader...</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Copying Vertex Shader...</Message>
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">copy "%(FullPath)" "$(TargetDir)"
@@ -462,7 +462,7 @@ cl /D "MSWindows" /EP $(IntDir)%(Filename).rrc &gt;               "$(ProjectDir)
     <ClCompile Include="..\GLator.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="..\GLSL_files\fragment_shader2.frag">
+    <CustomBuild Include="..\GLSL_files\BDLM_Fragment_16bit.frag.glsl">
       <FileType>Document</FileType>
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">copy "%(FullPath)" "$(TargetDir)"</Command>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">copy "%(FullPath)" "$(TargetDir)"</Command>

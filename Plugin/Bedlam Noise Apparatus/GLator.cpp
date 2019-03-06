@@ -68,7 +68,24 @@ namespace {
 		float mult;
 		float dim;
 		float zoom;
+		float mode;
+
+		Noise() = default;
+
+		Noise(float _R, float _G, float _B, float _allot, float _mult, float _dim, float _zoom)
+		{
+			R = _R;
+			G = _G;
+			B = _B;
+			allot = _allot;
+			mult = _mult;
+			dim = _dim;
+			zoom = _zoom;
+		}
+
 	};
+
+	
 
 
 	THREAD_LOCAL int t_thread = -1;
@@ -306,6 +323,7 @@ namespace {
 	void SwizzleGL(const AESDK_OpenGL::AESDK_OpenGL_EffectRenderDataPtr& renderContext,
 				   A_long widthL, A_long heightL,
 				   gl::GLuint		inputFrameTexture,
+					std::map<std::string, Noise>	noises,
 				   float			multiplier16bit)
 	{
 		glBindTexture(GL_TEXTURE_2D, inputFrameTexture);
@@ -320,6 +338,104 @@ namespace {
 		glUniformMatrix4fv(location, 1, GL_FALSE, (GLfloat*)&ModelviewProjection);
 		location = glGetUniformLocation(renderContext->mProgramObj2Su, "multiplier16bit");
 		glUniform1f(location, multiplier16bit);
+
+		location = glGetUniformLocation(renderContext->mProgramObj2Su, "Gold.R");
+		glUniform1f(location, noises["Gold Noise"].R);
+		location = glGetUniformLocation(renderContext->mProgramObj2Su, "Generic.R");
+		glUniform1f(location, noises["Generic Noise"].R);
+		location = glGetUniformLocation(renderContext->mProgramObj2Su, "CPerlin.R");
+		glUniform1f(location, noises["Classic Perlin"].R);
+		location = glGetUniformLocation(renderContext->mProgramObj2Su, "Perlin.R");
+		glUniform1f(location, noises["Perlin Noise"].R);
+		location = glGetUniformLocation(renderContext->mProgramObj2Su, "Simplex.R");
+		glUniform1f(location, noises["Simplex Noise"].R);
+		location = glGetUniformLocation(renderContext->mProgramObj2Su, "Voronoi.R");
+		glUniform1f(location, noises["Voronoi Noise"].R);
+		location = glGetUniformLocation(renderContext->mProgramObj2Su, "Gold.G");
+		glUniform1f(location, noises["Gold Noise"].G);
+		location = glGetUniformLocation(renderContext->mProgramObj2Su, "Generic.G");
+		glUniform1f(location, noises["Generic Noise"].G);
+		location = glGetUniformLocation(renderContext->mProgramObj2Su, "CPerlin.G");
+		glUniform1f(location, noises["Classic Perlin"].G);
+		location = glGetUniformLocation(renderContext->mProgramObj2Su, "Perlin.G");
+		glUniform1f(location, noises["Perlin Noise"].G);
+		location = glGetUniformLocation(renderContext->mProgramObj2Su, "Simplex.G");
+		glUniform1f(location, noises["Simplex Noise"].G);
+		location = glGetUniformLocation(renderContext->mProgramObj2Su, "Voronoi.G");
+		glUniform1f(location, noises["Voronoi Noise"].G);
+		location = glGetUniformLocation(renderContext->mProgramObj2Su, "Gold.B");
+		glUniform1f(location, noises["Gold Noise"].B);
+		location = glGetUniformLocation(renderContext->mProgramObj2Su, "Generic.B");
+		glUniform1f(location, noises["Generic Noise"].B);
+		location = glGetUniformLocation(renderContext->mProgramObj2Su, "CPerlin.B");
+		glUniform1f(location, noises["Classic Perlin"].B);
+		location = glGetUniformLocation(renderContext->mProgramObj2Su, "Perlin.B");
+		glUniform1f(location, noises["Perlin Noise"].B);
+		location = glGetUniformLocation(renderContext->mProgramObj2Su, "Simplex.B");
+		glUniform1f(location, noises["Simplex Noise"].B);
+		location = glGetUniformLocation(renderContext->mProgramObj2Su, "Voronoi.B");
+		glUniform1f(location, noises["Voronoi Noise"].B);
+		location = glGetUniformLocation(renderContext->mProgramObj2Su, "Gold.allot");
+		glUniform1f(location, noises["Gold Noise"].allot);
+		location = glGetUniformLocation(renderContext->mProgramObj2Su, "Generic.allot");
+		glUniform1f(location, noises["Generic Noise"].allot);
+		location = glGetUniformLocation(renderContext->mProgramObj2Su, "CPerlin.allot");
+		glUniform1f(location, noises["Classic Perlin"].allot);
+		location = glGetUniformLocation(renderContext->mProgramObj2Su, "Perlin.allot");
+		glUniform1f(location, noises["Perlin Noise"].allot);
+		location = glGetUniformLocation(renderContext->mProgramObj2Su, "Simplex.allot");
+		glUniform1f(location, noises["Simplex Noise"].allot);
+		location = glGetUniformLocation(renderContext->mProgramObj2Su, "Voronoi.allot");
+		glUniform1f(location, noises["Voronoi Noise"].allot);
+		location = glGetUniformLocation(renderContext->mProgramObj2Su, "Gold.mult");
+		glUniform1f(location, noises["Gold Noise"].mult);
+		location = glGetUniformLocation(renderContext->mProgramObj2Su, "Generic.mult");
+		glUniform1f(location, noises["Generic Noise"].mult);
+		location = glGetUniformLocation(renderContext->mProgramObj2Su, "CPerlin.mult");
+		glUniform1f(location, noises["Classic Perlin"].mult);
+		location = glGetUniformLocation(renderContext->mProgramObj2Su, "Perlin.mult");
+		glUniform1f(location, noises["Perlin Noise"].mult);
+		location = glGetUniformLocation(renderContext->mProgramObj2Su, "Simplex.mult");
+		glUniform1f(location, noises["Simplex Noise"].mult);
+		location = glGetUniformLocation(renderContext->mProgramObj2Su, "Voronoi.mult");
+		glUniform1f(location, noises["Voronoi Noise"].mult);
+		location = glGetUniformLocation(renderContext->mProgramObj2Su, "Gold.dim");
+		glUniform1f(location, noises["Gold Noise"].dim);
+		location = glGetUniformLocation(renderContext->mProgramObj2Su, "Generic.dim");
+		glUniform1f(location, noises["Generic Noise"].dim);
+		location = glGetUniformLocation(renderContext->mProgramObj2Su, "CPerlin.dim");
+		glUniform1f(location, noises["Classic Perlin"].dim);
+		location = glGetUniformLocation(renderContext->mProgramObj2Su, "Perlin.dim");
+		glUniform1f(location, noises["Perlin Noise"].dim);
+		location = glGetUniformLocation(renderContext->mProgramObj2Su, "Simplex.dim");
+		glUniform1f(location, noises["Simplex Noise"].dim);
+		location = glGetUniformLocation(renderContext->mProgramObj2Su, "Voronoi.dim");
+		glUniform1f(location, noises["Voronoi Noise"].dim);
+		location = glGetUniformLocation(renderContext->mProgramObj2Su, "Gold.zoom");
+		glUniform1f(location, noises["Gold Noise"].zoom);
+		location = glGetUniformLocation(renderContext->mProgramObj2Su, "Generic.zoom");
+		glUniform1f(location, noises["Generic Noise"].zoom);
+		location = glGetUniformLocation(renderContext->mProgramObj2Su, "CPerlin.zoom");
+		glUniform1f(location, noises["Classic Perlin"].zoom);
+		location = glGetUniformLocation(renderContext->mProgramObj2Su, "Perlin.zoom");
+		glUniform1f(location, noises["Perlin Noise"].zoom);
+		location = glGetUniformLocation(renderContext->mProgramObj2Su, "Simplex.zoom");
+		glUniform1f(location, noises["Simplex Noise"].zoom);
+		location = glGetUniformLocation(renderContext->mProgramObj2Su, "Voronoi.zoom");
+		glUniform1f(location, noises["Voronoi Noise"].zoom);
+		location = glGetUniformLocation(renderContext->mProgramObj2Su, "Gold.mode");
+		glUniform1f(location, noises["Gold Noise"].mode);
+		location = glGetUniformLocation(renderContext->mProgramObj2Su, "Generic.mode");
+		glUniform1f(location, noises["Generic Noise"].mode);
+		location = glGetUniformLocation(renderContext->mProgramObj2Su, "CPerlin.mode");
+		glUniform1f(location, noises["Classic Perlin"].mode);
+		location = glGetUniformLocation(renderContext->mProgramObj2Su, "Perlin.mode");
+		glUniform1f(location, noises["Perlin Noise"].mode);
+		location = glGetUniformLocation(renderContext->mProgramObj2Su, "Simplex.mode");
+		glUniform1f(location, noises["Simplex Noise"].mode);
+		location = glGetUniformLocation(renderContext->mProgramObj2Su, "Voronoi.mode");
+		glUniform1f(location, noises["Voronoi Noise"].mode);
+
 
 		AESDK_OpenGL_BindTextureToTarget(renderContext->mProgramObj2Su, inputFrameTexture, std::string("videoTexture"));
 
@@ -336,7 +452,7 @@ namespace {
 	void RenderGL(const AESDK_OpenGL::AESDK_OpenGL_EffectRenderDataPtr& renderContext,
 				  A_long widthL, A_long heightL,
 				  gl::GLuint		inputFrameTexture,
-				  PF_FpLong			sliderVal,
+				  std::map<std::string, Noise>			noises,
 				  float				multiplier16bit)
 	{
 		// - make sure we blend correctly inside the framebuffer
@@ -357,8 +473,102 @@ namespace {
 		// program uniforms
 		GLint location = glGetUniformLocation(renderContext->mProgramObjSu, "ModelviewProjection");
 		glUniformMatrix4fv(location, 1, GL_FALSE, (GLfloat*)&ModelviewProjection);
-		location = glGetUniformLocation(renderContext->mProgramObjSu, "sliderVal");
-		glUniform1f(location, sliderVal);
+		location = glGetUniformLocation(renderContext->mProgramObjSu, "Gold.R");
+		glUniform1f(location, noises["Gold Noise"].R);
+		location = glGetUniformLocation(renderContext->mProgramObjSu, "Generic.R");
+		glUniform1f(location, noises["Generic Noise"].R);
+		location = glGetUniformLocation(renderContext->mProgramObjSu, "CPerlin.R");
+		glUniform1f(location, noises["Classic Perlin"].R);
+		location = glGetUniformLocation(renderContext->mProgramObjSu, "Perlin.R");
+		glUniform1f(location, noises["Perlin Noise"].R);
+		location = glGetUniformLocation(renderContext->mProgramObjSu, "Simplex.R");
+		glUniform1f(location, noises["Simplex Noise"].R);
+		location = glGetUniformLocation(renderContext->mProgramObjSu, "Voronoi.R");
+		glUniform1f(location, noises["Voronoi Noise"].R);
+		location = glGetUniformLocation(renderContext->mProgramObjSu, "Gold.G");
+		glUniform1f(location, noises["Gold Noise"].G);
+		location = glGetUniformLocation(renderContext->mProgramObjSu, "Generic.G");
+		glUniform1f(location, noises["Generic Noise"].G);
+		location = glGetUniformLocation(renderContext->mProgramObjSu, "CPerlin.G");
+		glUniform1f(location, noises["Classic Perlin"].G);
+		location = glGetUniformLocation(renderContext->mProgramObjSu, "Perlin.G");
+		glUniform1f(location, noises["Perlin Noise"].G);
+		location = glGetUniformLocation(renderContext->mProgramObjSu, "Simplex.G");
+		glUniform1f(location, noises["Simplex Noise"].G);
+		location = glGetUniformLocation(renderContext->mProgramObjSu, "Voronoi.G");
+		glUniform1f(location, noises["Voronoi Noise"].G);
+		location = glGetUniformLocation(renderContext->mProgramObjSu, "Gold.B");
+		glUniform1f(location, noises["Gold Noise"].B);
+		location = glGetUniformLocation(renderContext->mProgramObjSu, "Generic.B");
+		glUniform1f(location, noises["Generic Noise"].B);
+		location = glGetUniformLocation(renderContext->mProgramObjSu, "CPerlin.B");
+		glUniform1f(location, noises["Classic Perlin"].B);
+		location = glGetUniformLocation(renderContext->mProgramObjSu, "Perlin.B");
+		glUniform1f(location, noises["Perlin Noise"].B);
+		location = glGetUniformLocation(renderContext->mProgramObjSu, "Simplex.B");
+		glUniform1f(location, noises["Simplex Noise"].B);
+		location = glGetUniformLocation(renderContext->mProgramObjSu, "Voronoi.B");
+		glUniform1f(location, noises["Voronoi Noise"].B);
+		location = glGetUniformLocation(renderContext->mProgramObjSu, "Gold.allot");
+		glUniform1f(location, noises["Gold Noise"].allot);
+		location = glGetUniformLocation(renderContext->mProgramObjSu, "Generic.allot");
+		glUniform1f(location, noises["Generic Noise"].allot);
+		location = glGetUniformLocation(renderContext->mProgramObjSu, "CPerlin.allot");
+		glUniform1f(location, noises["Classic Perlin"].allot);
+		location = glGetUniformLocation(renderContext->mProgramObjSu, "Perlin.allot");
+		glUniform1f(location, noises["Perlin Noise"].allot);
+		location = glGetUniformLocation(renderContext->mProgramObjSu, "Simplex.allot");
+		glUniform1f(location, noises["Simplex Noise"].allot);
+		location = glGetUniformLocation(renderContext->mProgramObjSu, "Voronoi.allot");
+		glUniform1f(location, noises["Voronoi Noise"].allot);
+		location = glGetUniformLocation(renderContext->mProgramObjSu, "Gold.mult");
+		glUniform1f(location, noises["Gold Noise"].mult);
+		location = glGetUniformLocation(renderContext->mProgramObjSu, "Generic.mult");
+		glUniform1f(location, noises["Generic Noise"].mult);
+		location = glGetUniformLocation(renderContext->mProgramObjSu, "CPerlin.mult");
+		glUniform1f(location, noises["Classic Perlin"].mult);
+		location = glGetUniformLocation(renderContext->mProgramObjSu, "Perlin.mult");
+		glUniform1f(location, noises["Perlin Noise"].mult);
+		location = glGetUniformLocation(renderContext->mProgramObjSu, "Simplex.mult");
+		glUniform1f(location, noises["Simplex Noise"].mult);
+		location = glGetUniformLocation(renderContext->mProgramObjSu, "Voronoi.mult");
+		glUniform1f(location, noises["Voronoi Noise"].mult);
+		location = glGetUniformLocation(renderContext->mProgramObjSu, "Gold.dim");
+		glUniform1f(location, noises["Gold Noise"].dim);
+		location = glGetUniformLocation(renderContext->mProgramObjSu, "Generic.dim");
+		glUniform1f(location, noises["Generic Noise"].dim);
+		location = glGetUniformLocation(renderContext->mProgramObjSu, "CPerlin.dim");
+		glUniform1f(location, noises["Classic Perlin"].dim);
+		location = glGetUniformLocation(renderContext->mProgramObjSu, "Perlin.dim");
+		glUniform1f(location, noises["Perlin Noise"].dim);
+		location = glGetUniformLocation(renderContext->mProgramObjSu, "Simplex.dim");
+		glUniform1f(location, noises["Simplex Noise"].dim);
+		location = glGetUniformLocation(renderContext->mProgramObjSu, "Voronoi.dim");
+		glUniform1f(location, noises["Voronoi Noise"].dim);
+		location = glGetUniformLocation(renderContext->mProgramObjSu, "Gold.zoom");
+		glUniform1f(location, noises["Gold Noise"].zoom);
+		location = glGetUniformLocation(renderContext->mProgramObjSu, "Generic.zoom");
+		glUniform1f(location, noises["Generic Noise"].zoom);
+		location = glGetUniformLocation(renderContext->mProgramObjSu, "CPerlin.zoom");
+		glUniform1f(location, noises["Classic Perlin"].zoom);
+		location = glGetUniformLocation(renderContext->mProgramObjSu, "Perlin.zoom");
+		glUniform1f(location, noises["Perlin Noise"].zoom);
+		location = glGetUniformLocation(renderContext->mProgramObjSu, "Simplex.zoom");
+		glUniform1f(location, noises["Simplex Noise"].zoom);
+		location = glGetUniformLocation(renderContext->mProgramObjSu, "Voronoi.zoom");
+		glUniform1f(location, noises["Voronoi Noise"].zoom);
+		location = glGetUniformLocation(renderContext->mProgramObjSu, "Gold.mode");
+		glUniform1f(location, noises["Gold Noise"].mode);
+		location = glGetUniformLocation(renderContext->mProgramObjSu, "Generic.mode");
+		glUniform1f(location, noises["Generic Noise"].mode);
+		location = glGetUniformLocation(renderContext->mProgramObjSu, "CPerlin.mode");
+		glUniform1f(location, noises["Classic Perlin"].mode);
+		location = glGetUniformLocation(renderContext->mProgramObjSu, "Perlin.mode");
+		glUniform1f(location, noises["Perlin Noise"].mode);
+		location = glGetUniformLocation(renderContext->mProgramObjSu, "Simplex.mode");
+		glUniform1f(location, noises["Simplex Noise"].mode);
+		location = glGetUniformLocation(renderContext->mProgramObjSu, "Voronoi.mode");
+		glUniform1f(location, noises["Voronoi Noise"].mode);
 		location = glGetUniformLocation(renderContext->mProgramObjSu, "multiplier16bit");
 		glUniform1f(location, multiplier16bit);
 
@@ -1370,6 +1580,7 @@ SmartRender(
 	PF_Fixed MultiplierCperlin_Val;
 	PF_FpLong ZoomCperlin_Val;
 	PF_FpLong AllotmentPerlin_Val;
+	PF_FpLong DimensionPerlin_Val;
 	PF_Fixed MultiplierPerlin_Val;
 	PF_FpLong ZoomPerlin_Val;
 	PF_FpLong AllotmentSimplex_Val;
@@ -1395,6 +1606,7 @@ SmartRender(
 		ZoomCperlin_Val = ZoomCperlin.u.fs_d.value;
 		AllotmentPerlin_Val = AllotmentPerlin.u.fs_d.value;
 		MultiplierPerlin_Val = MultiplierPerlin.u.ad.value;
+		DimensionPerlin_Val = DimensionPerlin.u.fs_d.value;
 		ZoomPerlin_Val = ZoomPerlin.u.fs_d.value;
 		AllotmentSimplex_Val = AllotmentSimplex.u.fs_d.value;
 		MultiplierSimplex_Val = MultiplierSimplex.u.ad.value;
@@ -1404,6 +1616,34 @@ SmartRender(
 		ZoomCv_Val = ZoomCv.u.fs_d.value;
 
 	}
+
+	Noise Gold_Noise((float)Color_Val.red, (float)Color_Val.green, (float)Color_Val.blue,
+		AllotmentGold_Val, MultiplierGold_Val, 0.0, 0.0);
+	Gold_Noise.mode = (Mode_Val == 1) ? 1.00 : 0.0;
+	Noise Generic_Noise((float)Color_Val.red, (float)Color_Val.green, (float)Color_Val.blue,
+		AllotmentGeneric_Val, MultiplierGeneric_Val, 0.0, ZoomGeneric_Val);
+	Generic_Noise.mode = (Mode_Val == 2) ? 1.00 : 0.0;
+	Noise CPerlin_Noise((float)Color_Val.red, (float)Color_Val.green, (float)Color_Val.blue,
+		AllotmentCperlin_Val, MultiplierCperlin_Val, 0.0, ZoomCperlin_Val);
+	CPerlin_Noise.mode = (Mode_Val == 3) ? 1.00 : 0.0;
+	Noise Perlin_Noise((float)Color_Val.red, (float)Color_Val.green, (float)Color_Val.blue,
+		AllotmentPerlin_Val, MultiplierPerlin_Val, DimensionPerlin_Val, ZoomPerlin_Val);
+	Perlin_Noise.mode = (Mode_Val == 4) ? 1.00 : 0.0;
+	Noise Simplex_Noise((float)Color_Val.red, (float)Color_Val.green, (float)Color_Val.blue,
+		AllotmentSimplex_Val, MultiplierSimplex_Val, 0.0, ZoomSimplex_Val);
+	Simplex_Noise.mode = (Mode_Val == 5) ? 1.00 : 0.0;
+	Noise Voronoi_Noise((float)Color_Val.red, (float)Color_Val.green, (float)Color_Val.blue,
+		AllotmentCv_Val, MultiplierCv_Val, 0.0, ZoomCv_Val);
+	Voronoi_Noise.mode = (Mode_Val == 6) ? 1.00 : 0.0;
+
+	std::map<std::string, Noise> noises;
+
+	noises["Gold Noise"] = Gold_Noise;
+	noises["Generic Noise"] = Generic_Noise;
+	noises["Classic Perlin"] = CPerlin_Noise;
+	noises["Perlin Noise"] = Perlin_Noise;
+	noises["Simplex Noise"] = Simplex_Noise;
+	noises["Voronoi Noise"] = Voronoi_Noise;
 
 	ERR((extra->cb->checkout_layer_pixels(in_data->effect_ref, BEDLM_INPUT, &input_worldP)));
 
@@ -1462,7 +1702,7 @@ SmartRender(
 			
 			// - simply blend the texture inside the frame buffer
 			// - TODO: hack your own shader there
-			RenderGL(renderContext, widthL, heightL, inputFrameTexture, sliderVal, multiplier16bit);
+			RenderGL(renderContext, widthL, heightL, inputFrameTexture, noises, multiplier16bit);
 
 			// - we toggle PBO textures (we use the PBO we just created as an input)
 			AESDK_OpenGL_MakeReadyToRender(*renderContext.get(), inputFrameTexture);
@@ -1471,7 +1711,7 @@ SmartRender(
 			glClear(GL_COLOR_BUFFER_BIT);
 
 			// swizzle using the previous output
-			SwizzleGL(renderContext, widthL, heightL, renderContext->mOutputFrameTexture, multiplier16bit);
+			SwizzleGL(renderContext, widthL, heightL, renderContext->mOutputFrameTexture, noises, multiplier16bit);
 
 			if (hasGremedy) {
 				gl::glFrameTerminatorGREMEDY();

@@ -92,7 +92,7 @@ typedef float				fpshort;
 #define BLUE_DFLT		rand() % 250
 #define GREEN_DFLT		rand() % 250
 
-#define MULT_ANGLE_DFLT		rand() % 360
+#define MULT_ANGLE_DFLT		45
 
 enum {
 	BEDLM_INPUT = 0,

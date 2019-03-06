@@ -227,13 +227,13 @@
     <CustomBuild Include="..\GLatorPiPL.r">
       <Filter>Resources</Filter>
     </CustomBuild>
-    <CustomBuild Include="..\GLSL_files\fragment_shader.frag">
+    <CustomBuild Include="..\GLSL_files\BDLM_Vertex_Shader.vert.glsl">
       <Filter>GLSL files</Filter>
     </CustomBuild>
-    <CustomBuild Include="..\GLSL_files\vertex_shader.vert">
+    <CustomBuild Include="..\GLSL_files\BDLM_Fragment_8bit.frag.glsl">
       <Filter>GLSL files</Filter>
     </CustomBuild>
-    <CustomBuild Include="..\GLSL_files\fragment_shader2.frag">
+    <CustomBuild Include="..\GLSL_files\BDLM_Fragment_16bit.frag.glsl">
       <Filter>GLSL files</Filter>
     </CustomBuild>
   </ItemGroup>

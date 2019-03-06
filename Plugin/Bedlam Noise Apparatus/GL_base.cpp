@@ -603,14 +603,14 @@ void AESDK_OpenGL_InitResources(AESDK_OpenGL_EffectRenderData& inData, u_short i
 	if (inData.mProgramObjSu == 0) {
 		//initialize and compile the shader objects
 		inData.mProgramObjSu = AESDK_OpenGL_InitShader(
-			resourcePath + "vertex_shader.vert",
-			resourcePath + "fragment_shader.frag");
+			resourcePath + "BDLM_Vertex_Shader.vert.glsl",
+			resourcePath + "BDLM_Fragment_8bit.frag.glsl");
 	}
 	if (inData.mProgramObj2Su == 0) {
 		//initialize and compile the shader objects
 		inData.mProgramObj2Su = AESDK_OpenGL_InitShader(
-			resourcePath + "vertex_shader.vert",
-			resourcePath + "fragment_shader2.frag");
+			resourcePath + "BDLM_Vertex_Shader.vert.glsl",
+			resourcePath + "BDLM_Fragment_16bit.frag.glsl");
 	}
 }
 

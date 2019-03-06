@@ -5,6 +5,8 @@ in vec4 out_pos;
 in vec2 out_uvs;
 out vec4 colourOut;
 
+
+
 void main( void )
 {
 	//simplest texture lookup
