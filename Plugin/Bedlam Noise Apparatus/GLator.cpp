@@ -324,6 +324,8 @@ namespace {
 				   A_long widthL, A_long heightL,
 				   gl::GLuint		inputFrameTexture,
 					std::map<std::string, Noise>	noises,
+					float						opacity,
+					float					blend,
 				   float			multiplier16bit)
 	{
 		glBindTexture(GL_TEXTURE_2D, inputFrameTexture);
@@ -338,7 +340,10 @@ namespace {
 		glUniformMatrix4fv(location, 1, GL_FALSE, (GLfloat*)&ModelviewProjection);
 		location = glGetUniformLocation(renderContext->mProgramObj2Su, "multiplier16bit");
 		glUniform1f(location, multiplier16bit);
-
+		location = glGetUniformLocation(renderContext->mProgramObj2Su, "opacity");
+		glUniform1f(location, opacity);
+		location = glGetUniformLocation(renderContext->mProgramObj2Su, "blend");
+		glUniform1f(location, blend);
 		location = glGetUniformLocation(renderContext->mProgramObj2Su, "Gold.R");
 		glUniform1f(location, noises["Gold Noise"].R);
 		location = glGetUniformLocation(renderContext->mProgramObj2Su, "Generic.R");
@@ -453,6 +458,8 @@ namespace {
 				  A_long widthL, A_long heightL,
 				  gl::GLuint		inputFrameTexture,
 				  std::map<std::string, Noise>			noises,
+					float					opacity,
+				float				blend,
 				  float				multiplier16bit)
 	{
 		// - make sure we blend correctly inside the framebuffer
@@ -473,6 +480,10 @@ namespace {
 		// program uniforms
 		GLint location = glGetUniformLocation(renderContext->mProgramObjSu, "ModelviewProjection");
 		glUniformMatrix4fv(location, 1, GL_FALSE, (GLfloat*)&ModelviewProjection);
+		location = glGetUniformLocation(renderContext->mProgramObjSu, "opacity");
+		glUniform1f(location, opacity);
+		location = glGetUniformLocation(renderContext->mProgramObjSu, "blend");
+		glUniform1f(location, blend);
 		location = glGetUniformLocation(renderContext->mProgramObjSu, "Gold.R");
 		glUniform1f(location, noises["Gold Noise"].R);
 		location = glGetUniformLocation(renderContext->mProgramObjSu, "Generic.R");
@@ -751,10 +762,28 @@ ParamsSetup (
 	PF_ADD_POPUP(STR(StrID_Mode),
 		6,
 		1,
-		("Gold | Generic | Perlin CLassic | Perlin | Simplex | Voronoi"),
+		("Gold | Generic | Perlin Classic | Perlin | Simplex | Voronoi"),
 		BDLM_DISK_MODE_ID);
 	AEFX_CLR_STRUCT(def);
 //	PF_END_TOPIC(BDLM_MODE_DISK_AND_COLOR_END_ID);
+
+
+	PF_ADD_FLOAT_SLIDERX(STR(StrID_Opacity),
+		PERCENT_MIN,
+		PERCENT_MAX,
+		PERCENT_MIN,
+		PERCENT_MAX,
+		PERCENT_DFLT,
+		PF_Precision_THOUSANDTHS,
+		0,
+		0,
+		BDLM_DISK_OPACITY_ID);
+	AEFX_CLR_STRUCT(def);
+	PF_ADD_POPUP(STR(StrID_Blend),
+		2,
+		1,
+		("Add | Multiply"),
+		BDLM_DISK_BLEND_ID);
 	AEFX_CLR_STRUCT(def);
 
 	PF_ADD_TOPIC(STR(StrID_Gold),
@@ -777,7 +806,6 @@ ParamsSetup (
 	AEFX_CLR_STRUCT(def);
 	PF_END_TOPIC(BDLM_GOLD_DISK_NOISE_END_ID);
 	AEFX_CLR_STRUCT(def);
-
 
 	PF_ADD_TOPIC(STR(StrID_Generic),
 		BDLM_GENERIC_DISK_NOISE_START_ID);
@@ -1008,6 +1036,8 @@ PreRender(
 	PF_ParamDef		ModeAndColorStart;
 	PF_ParamDef		Color;
 	PF_ParamDef		Mode;
+	PF_ParamDef		Blend;
+	PF_ParamDef		Percent;
 	PF_ParamDef		ModeAndColorEnd;
 	PF_ParamDef		GoldNoiseStart;
 	PF_ParamDef		AllotmentGold;
@@ -1040,12 +1070,15 @@ PreRender(
 	PF_ParamDef		ZoomCv;
 	PF_ParamDef		CellvoronoiEnd;
 
+
 	PF_RenderRequest req = extra->input->output_request;
 	PF_CheckoutResult in_result;
 
 	AEFX_CLR_STRUCT(ModeAndColorStart);
 	AEFX_CLR_STRUCT(Color);
 	AEFX_CLR_STRUCT(Mode);
+	AEFX_CLR_STRUCT(Percent);
+	AEFX_CLR_STRUCT(Blend);
 	AEFX_CLR_STRUCT(ModeAndColorEnd);
 	AEFX_CLR_STRUCT(GoldNoiseStart);
 	AEFX_CLR_STRUCT(AllotmentGold);
@@ -1095,6 +1128,16 @@ PreRender(
 		in_data->time_step,
 		in_data->time_scale,
 		&Mode));
+	ERR(PF_CHECKOUT_PARAM(in_data,
+		BDLM_OPACITY, in_data->current_time,
+		in_data->time_step,
+		in_data->time_scale,
+		&Percent));
+	ERR(PF_CHECKOUT_PARAM(in_data,
+		BDLM_BLEND, in_data->current_time,
+		in_data->time_step,
+		in_data->time_scale,
+		&Blend));
 /*	ERR(PF_CHECKOUT_PARAM(in_data,
 		BDLM_MODE_AND_COLOR_END, in_data->current_time,
 		in_data->time_step,
@@ -1267,6 +1310,8 @@ PreRender(
 	ERR2(PF_CHECKIN_PARAM(in_data, &ModeAndColorStart));
 	ERR2(PF_CHECKIN_PARAM(in_data, &Color));
 	ERR2(PF_CHECKIN_PARAM(in_data, &Mode));
+	ERR2(PF_CHECKIN_PARAM(in_data, &Percent));
+	ERR2(PF_CHECKIN_PARAM(in_data, &Blend));
 	ERR2(PF_CHECKIN_PARAM(in_data, &ModeAndColorEnd));
 	ERR2(PF_CHECKIN_PARAM(in_data, &GoldNoiseStart));
 	ERR2(PF_CHECKIN_PARAM(in_data, &AllotmentGold));
@@ -1322,6 +1367,8 @@ SmartRender(
 	PF_ParamDef		ModeAndColorStart;
 	PF_ParamDef		Color;
 	PF_ParamDef		Mode;
+	PF_ParamDef		Percent;
+	PF_ParamDef		Blend;
 	PF_ParamDef		ModeAndColorEnd;
 	PF_ParamDef		GoldNoiseStart;
 	PF_ParamDef		AllotmentGold;
@@ -1357,6 +1404,8 @@ SmartRender(
 	AEFX_CLR_STRUCT(ModeAndColorStart);
 	AEFX_CLR_STRUCT(Color);
 	AEFX_CLR_STRUCT(Mode);
+	AEFX_CLR_STRUCT(Percent);
+	AEFX_CLR_STRUCT(Blend);
 	AEFX_CLR_STRUCT(ModeAndColorEnd);
 	AEFX_CLR_STRUCT(GoldNoiseStart);
 	AEFX_CLR_STRUCT(AllotmentGold);
@@ -1406,6 +1455,16 @@ SmartRender(
 		in_data->time_step,
 		in_data->time_scale,
 		&Mode));
+	ERR(PF_CHECKOUT_PARAM(in_data,
+		BDLM_OPACITY, in_data->current_time,
+		in_data->time_step,
+		in_data->time_scale,
+		&Percent));
+	ERR(PF_CHECKOUT_PARAM(in_data,
+		BDLM_BLEND, in_data->current_time,
+		in_data->time_step,
+		in_data->time_scale,
+		&Blend));
 /*	ERR(PF_CHECKOUT_PARAM(in_data,
 		BDLM_MODE_AND_COLOR_END, in_data->current_time,
 		in_data->time_step,
@@ -1564,6 +1623,8 @@ SmartRender(
 	
 	PF_PixelFloat Color_Val;
 	A_long Mode_Val;
+	PF_FpLong Percent_Val;
+	A_long Blend_Val;
 	PF_FpLong AllotmentGold_Val;
 	PF_Fixed MultiplierGold_Val;
 	PF_FpLong AllotmentGeneric_Val;
@@ -1589,6 +1650,8 @@ SmartRender(
 		suites.ColorParamSuite1()->PF_GetFloatingPointColorFromColorDef(in_data->effect_ref,
 			&Color, &Color_Val);
 		Mode_Val = Mode.u.pd.value;
+		Blend_Val = Blend.u.pd.value;
+		Percent_Val = Percent.u.fs_d.value / 100.00;
 		AllotmentGold_Val = AllotmentGold.u.fs_d.value;
 		MultiplierGold_Val = MultiplierGold.u.ad.value;
 		AllotmentGeneric_Val = AllotmentGeneric.u.fs_d.value;
@@ -1637,6 +1700,8 @@ SmartRender(
 	noises["Perlin Noise"] = Perlin_Noise;
 	noises["Simplex Noise"] = Simplex_Noise;
 	noises["Voronoi Noise"] = Voronoi_Noise;
+	float opacity = (float)Percent_Val;
+	float blend = (Blend_Val == 1) ? 1.0 : 2.0;
 
 	ERR((extra->cb->checkout_layer_pixels(in_data->effect_ref, BEDLM_INPUT, &input_worldP)));
 
@@ -1695,7 +1760,7 @@ SmartRender(
 			
 			// - simply blend the texture inside the frame buffer
 			// - TODO: hack your own shader there
-			RenderGL(renderContext, widthL, heightL, inputFrameTexture, noises, multiplier16bit);
+			RenderGL(renderContext, widthL, heightL, inputFrameTexture, noises, opacity, blend, multiplier16bit);
 
 			// - we toggle PBO textures (we use the PBO we just created as an input)
 			AESDK_OpenGL_MakeReadyToRender(*renderContext.get(), inputFrameTexture);
@@ -1704,7 +1769,7 @@ SmartRender(
 			glClear(GL_COLOR_BUFFER_BIT);
 
 			// swizzle using the previous output
-			SwizzleGL(renderContext, widthL, heightL, renderContext->mOutputFrameTexture, noises, multiplier16bit);
+			SwizzleGL(renderContext, widthL, heightL, renderContext->mOutputFrameTexture, noises, opacity, blend, multiplier16bit);
 
 			if (hasGremedy) {
 				gl::glFrameTerminatorGREMEDY();

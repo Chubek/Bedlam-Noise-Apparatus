@@ -29,6 +29,8 @@ typedef enum {
 	StrID_Mode_And_Color,
 	StrID_Color,
 	StrID_Mode,
+	StrID_Opacity,
+	StrID_Blend,
 	StrID_Gold,
 	StrID_Generic,
 	StrID_Perlic_Classic,

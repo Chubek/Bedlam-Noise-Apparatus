@@ -13,6 +13,8 @@
 
 uniform sampler2D videoTexture;
 uniform float multiplier16bit;
+uniform float opacity;
+uniform float blend;
 in vec4 out_pos;
 in vec2 out_uvs;
 out vec4 colourOut;
@@ -418,12 +420,14 @@ void main( void )
 	vec3 Voronoi_Noise = vec3(Voronoi.R, Voronoi.G, Voronoi.B) * POWER * fbm(SCALE*Voronoi.zoom * Voronoi.mode * out_uvs) + BIAS;
 
 
-	colourOut = vec4(Gold_Noise 
+	vec4 final_noise = vec4(Gold_Noise 
 	+ Generic_Noise 
 	+ CPerlin_Noise 
 	+ Perlin_Noise
 	+ Simplex_Noise
-	+ Voronoi_Noise, 1.0);
+	+ Voronoi_Noise, opacity);
+
+	colourOut = (blend == 1.0) ? colourOut + final_noise : colourOut * final_noise;
 
 
 }
