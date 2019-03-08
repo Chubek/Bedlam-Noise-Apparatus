@@ -739,9 +739,9 @@ ParamsSetup (
 
 	AEFX_CLR_STRUCT(def);
 
-	PF_ADD_TOPIC(STR(StrID_Mode_And_Color),
+/*	PF_ADD_TOPIC(STR(StrID_Mode_And_Color),
 		BDLM_MODE_DISK_AND_COLOR_START_ID);
-	AEFX_CLR_STRUCT(def);
+	AEFX_CLR_STRUCT(def);*/
 	PF_ADD_COLOR(STR(StrID_Color),
 		RED_DFLT,
 		GREEN_DFLT,
@@ -751,10 +751,10 @@ ParamsSetup (
 	PF_ADD_POPUP(STR(StrID_Mode),
 		6,
 		1,
-		("Gold | Generic | Perlin CLassic | Perlin | Simplex | Cell/Voronoi"),
+		("Gold | Generic | Perlin CLassic | Perlin | Simplex | Voronoi"),
 		BDLM_DISK_MODE_ID);
 	AEFX_CLR_STRUCT(def);
-	PF_END_TOPIC(BDLM_MODE_DISK_AND_COLOR_END_ID);
+//	PF_END_TOPIC(BDLM_MODE_DISK_AND_COLOR_END_ID);
 	AEFX_CLR_STRUCT(def);
 
 	PF_ADD_TOPIC(STR(StrID_Gold),
@@ -874,15 +874,8 @@ ParamsSetup (
 		0,
 		BDLM_DIMENSION_DISK_PERLIN_ID);
 	AEFX_CLR_STRUCT(def);
-	PF_ADD_FLOAT_SLIDERX(STR(StrID_Zoom),
-		ZOOM_SLIDER_MIN,
-		ZOOM_SLIDER_MAX,
-		ZOOM_SLIDER_MIN,
-		ZOOM_SLIDER_MAX,
-		ZOOM_SLIDER_DFLT,
-		PF_Precision_THOUSANDTHS,
-		0,
-		0,
+	PF_ADD_ANGLE(STR(StrID_Dim_Mult),
+		MULT_ANGLE_DFLT,
 		BDLM_ZOOM_DISK_PERLIN_ID);
 	AEFX_CLR_STRUCT(def);
 	PF_END_TOPIC(BDLM_PERLIN_DISK_NOISE_END_ID);
@@ -931,7 +924,7 @@ ParamsSetup (
 		ALLOT_SLIDER_MAX,
 		ALLOT_SLIDER_MIN,
 		ALLOT_SLIDER_MAX,
-		ALLOT_SLIDER_DFLT,
+		VORON_ALLOT_DFLT,
 		PF_Precision_THOUSANDTHS,
 		0,
 		0,
@@ -942,11 +935,11 @@ ParamsSetup (
 		BDLM_MULTIPLIER_DISK_CV_ID);
 	AEFX_CLR_STRUCT(def);
 	PF_ADD_FLOAT_SLIDERX(STR(StrID_Zoom),
-		ZOOM_SLIDER_MIN,
-		ZOOM_SLIDER_MAX,
-		ZOOM_SLIDER_MIN,
-		ZOOM_SLIDER_MAX,
-		ZOOM_SLIDER_DFLT,
+		VORON_ZOOM_MIN,
+		VORON_ZOOM_MAX,
+		VORON_ZOOM_MIN,
+		VORON_ZOOM_MAX,
+		VORON_ZOOM_DFLT,
 		PF_Precision_THOUSANDTHS,
 		0,
 		0,
@@ -1087,11 +1080,11 @@ PreRender(
 
 
 
-	ERR(PF_CHECKOUT_PARAM(in_data,
+	/*ERR(PF_CHECKOUT_PARAM(in_data,
 		BDLM_MODE_AND_COLOR_START, in_data->current_time,
 		in_data->time_step,
 		in_data->time_scale,
-		&ModeAndColorStart));
+		&ModeAndColorStart));*/
 	ERR(PF_CHECKOUT_PARAM(in_data,
 		BDLM_COLOR, in_data->current_time,
 		in_data->time_step,
@@ -1102,11 +1095,11 @@ PreRender(
 		in_data->time_step,
 		in_data->time_scale,
 		&Mode));
-	ERR(PF_CHECKOUT_PARAM(in_data,
+/*	ERR(PF_CHECKOUT_PARAM(in_data,
 		BDLM_MODE_AND_COLOR_END, in_data->current_time,
 		in_data->time_step,
 		in_data->time_scale,
-		&ModeAndColorEnd));
+		&ModeAndColorEnd));*/
 	ERR(PF_CHECKOUT_PARAM(in_data,
 		BDLM_GOLD_NOISE_START, in_data->current_time,
 		in_data->time_step,
@@ -1398,11 +1391,11 @@ SmartRender(
 
 
 
-	ERR(PF_CHECKOUT_PARAM(in_data,
+/*	ERR(PF_CHECKOUT_PARAM(in_data,
 		BDLM_MODE_AND_COLOR_START, in_data->current_time,
 		in_data->time_step,
 		in_data->time_scale,
-		&ModeAndColorStart));
+		&ModeAndColorStart));*/
 	ERR(PF_CHECKOUT_PARAM(in_data,
 		BDLM_COLOR, in_data->current_time,
 		in_data->time_step,
@@ -1413,11 +1406,11 @@ SmartRender(
 		in_data->time_step,
 		in_data->time_scale,
 		&Mode));
-	ERR(PF_CHECKOUT_PARAM(in_data,
+/*	ERR(PF_CHECKOUT_PARAM(in_data,
 		BDLM_MODE_AND_COLOR_END, in_data->current_time,
 		in_data->time_step,
 		in_data->time_scale,
-		&ModeAndColorEnd));
+		&ModeAndColorEnd));*/
 	ERR(PF_CHECKOUT_PARAM(in_data,
 		BDLM_GOLD_NOISE_START, in_data->current_time,
 		in_data->time_step,
@@ -1582,7 +1575,7 @@ SmartRender(
 	PF_FpLong AllotmentPerlin_Val;
 	PF_FpLong DimensionPerlin_Val;
 	PF_Fixed MultiplierPerlin_Val;
-	PF_FpLong ZoomPerlin_Val;
+	PF_Fixed ZoomPerlin_Val;
 	PF_FpLong AllotmentSimplex_Val;
 	PF_Fixed MultiplierSimplex_Val;
 	PF_FpLong ZoomSimplex_Val;
@@ -1607,7 +1600,7 @@ SmartRender(
 		AllotmentPerlin_Val = AllotmentPerlin.u.fs_d.value;
 		MultiplierPerlin_Val = MultiplierPerlin.u.ad.value;
 		DimensionPerlin_Val = DimensionPerlin.u.fs_d.value;
-		ZoomPerlin_Val = ZoomPerlin.u.fs_d.value;
+		ZoomPerlin_Val = ZoomPerlin.u.ad.value;
 		AllotmentSimplex_Val = AllotmentSimplex.u.fs_d.value;
 		MultiplierSimplex_Val = MultiplierSimplex.u.ad.value;
 		ZoomSimplex_Val = ZoomSimplex.u.fs_d.value;
@@ -1617,23 +1610,23 @@ SmartRender(
 
 	}
 
-	Noise Gold_Noise((float)Color_Val.red, (float)Color_Val.green, (float)Color_Val.blue,
+	Noise Gold_Noise(Color_Val.red, Color_Val.green, Color_Val.blue,
 		AllotmentGold_Val, MultiplierGold_Val, 0.0, 0.0);
 	Gold_Noise.mode = (Mode_Val == 1) ? 1.00 : 0.0;
-	Noise Generic_Noise((float)Color_Val.red, (float)Color_Val.green, (float)Color_Val.blue,
-		AllotmentGeneric_Val, MultiplierGeneric_Val, 0.0, ZoomGeneric_Val);
+	Noise Generic_Noise(Color_Val.red, Color_Val.green, Color_Val.blue,
+		AllotmentGeneric_Val, FIX_2_FLOAT(MultiplierGeneric_Val), 0.0, ZoomGeneric_Val);
 	Generic_Noise.mode = (Mode_Val == 2) ? 1.00 : 0.0;
-	Noise CPerlin_Noise((float)Color_Val.red, (float)Color_Val.green, (float)Color_Val.blue,
-		AllotmentCperlin_Val, MultiplierCperlin_Val, 0.0, ZoomCperlin_Val);
+	Noise CPerlin_Noise(Color_Val.red, Color_Val.green, Color_Val.blue,
+		AllotmentCperlin_Val, FIX_2_FLOAT(MultiplierCperlin_Val), 0.0, ZoomCperlin_Val);
 	CPerlin_Noise.mode = (Mode_Val == 3) ? 1.00 : 0.0;
-	Noise Perlin_Noise((float)Color_Val.red, (float)Color_Val.green, (float)Color_Val.blue,
-		AllotmentPerlin_Val, MultiplierPerlin_Val, DimensionPerlin_Val, ZoomPerlin_Val);
+	Noise Perlin_Noise(Color_Val.red, Color_Val.green, Color_Val.blue,
+		AllotmentPerlin_Val, FIX_2_FLOAT(MultiplierPerlin_Val), DimensionPerlin_Val, FIX_2_FLOAT(ZoomPerlin_Val));
 	Perlin_Noise.mode = (Mode_Val == 4) ? 1.00 : 0.0;
-	Noise Simplex_Noise((float)Color_Val.red, (float)Color_Val.green, (float)Color_Val.blue,
-		AllotmentSimplex_Val, MultiplierSimplex_Val, 0.0, ZoomSimplex_Val);
+	Noise Simplex_Noise(Color_Val.red, Color_Val.green, Color_Val.blue,
+		AllotmentSimplex_Val, FIX_2_FLOAT(MultiplierSimplex_Val), 0.0, ZoomSimplex_Val);
 	Simplex_Noise.mode = (Mode_Val == 5) ? 1.00 : 0.0;
-	Noise Voronoi_Noise((float)Color_Val.red, (float)Color_Val.green, (float)Color_Val.blue,
-		AllotmentCv_Val, MultiplierCv_Val, 0.0, ZoomCv_Val);
+	Noise Voronoi_Noise(Color_Val.red, Color_Val.green, Color_Val.blue,
+		AllotmentCv_Val, FIX_2_FLOAT(MultiplierCv_Val), 0.0, ZoomCv_Val);
 	Voronoi_Noise.mode = (Mode_Val == 6) ? 1.00 : 0.0;
 
 	std::map<std::string, Noise> noises;
@@ -1798,9 +1791,9 @@ PF_Err PluginDataEntryFunction(
 	result = PF_REGISTER_EFFECT(
 		inPtr,
 		inPluginDataCallBackPtr,
-		"GLator", // Name
-		"ADBE GLator", // Match Name
-		"Sample Plug-ins", // Category
+		"Bedlam Noise Apparatus", // Name
+		"ADBE Bedlam", // Match Name
+		"Side Hustle GVL", // Category
 		AE_RESERVED_INFO); // Reserved Info
 
 	return result;

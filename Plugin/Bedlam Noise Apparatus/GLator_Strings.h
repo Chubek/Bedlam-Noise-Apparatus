@@ -22,7 +22,7 @@
 #pragma once
 
 typedef enum {
-	StrID_NONE, 
+	StrID_NONE,
 	StrID_Name,
 	StrID_Description,
 	StrID_Color_Param_Name,
@@ -39,6 +39,7 @@ typedef enum {
 	StrID_Mult,
 	StrID_Zoom,
 	StrID_Dim,
+	StrID_Dim_Mult,
 	StrID_Checkbox_Param_Name,	
 	StrID_Checkbox_Description,
 	StrID_DependString1,
